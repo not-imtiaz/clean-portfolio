@@ -1,4 +1,4 @@
-<img src = "portfolio_screenshot.png"/>
+<img src = "img/portfolio_screenshot.png"/>
 
 # Personal Portfolio Template
 
