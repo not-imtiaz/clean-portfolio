@@ -1,3 +1,5 @@
+<img src = "portfolio_screenshot.png"/>
+
 # Personal Portfolio Template
 
 A dark-mode, minimalist developer portfolio built with React, Tailwind CSS, and Framer Motion. No build tools required — open `index.html` in a browser and it works.
