@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Imtiaz Ahmed | Web Developer from Bangladesh</title>
+    <meta name="description" content="Imtiaz Ahmed — student web developer from Bangladesh building fast, minimal web apps with Next.js, React, and TypeScript." />
+    <meta name="keywords" content="Imtiaz Ahmed, web developer, Bangladesh, React, Next.js, portfolio" />
+    <meta name="author" content="Imtiaz Ahmed" />
+    <link rel="canonical" href="https://imtiaz.dev/" />
+    <meta property="og:title" content="Imtiaz Ahmed | Web Developer" />
+    <meta property="og:description" content="I build fast, minimal web apps that solve real problems." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Imtiaz Ahmed | Web Developer" />
+    <meta name="twitter:description" content="I build fast, minimal web apps that solve real problems." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+    <!-- React & Tailwind via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Framer Motion -->
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"DM Sans"', 'sans-serif'],
+              mono: ['"DM Mono"', 'monospace'],
+            },
+            colors: {
+              base: '#0a0a0b',
+              surface: '#111113',
+              card: '#18181b',
+              border: '#27272a',
+              muted: '#71717a',
+              accent: '#e4e4e7',
+              highlight: '#a1a1aa',
+              green: '#4ade80',
+              blue: '#60a5fa',
+              amber: '#fbbf24',
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        background: #0a0a0b;
+        color: #e4e4e7;
+        font-family: 'DM Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #0a0a0b; }
+      ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 99px; }
+
+      /* Glass nav */
+      .glass-nav {
+        background: rgba(10, 10, 11, 0.72);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        border: 1px solid rgba(255,255,255,0.07);
+      }
+
+      /* Bento card */
+      .bento-card {
+        background: #18181b;
+        border: 1px solid #27272a;
+        border-radius: 20px;
+        transition: border-color 0.25s, transform 0.25s;
+        overflow: hidden;
+        position: relative;
+      }
+      .bento-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 20px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.04), transparent 60%);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .bento-card:hover::before { opacity: 1; }
+      .bento-card:hover { border-color: #3f3f46; transform: translateY(-2px); }
+      .bento-card > * { position: relative; z-index: 1; }
+
+      /* Tag pill */
+      .tag {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.68rem;
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        padding: 3px 10px;
+        border-radius: 99px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #a1a1aa;
+      }
+
+      /* Status dot */
+      .dot-green {
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 8px #4ade80aa;
+        display: inline-block;
+        flex-shrink: 0;
+      }
+
+      /* Glow line */
+      .glow-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      }
+
+      /* Section label */
+      .section-label {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #52525b;
+      }
+
+      /* Noise overlay */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      }
+
+      /* Ambient glow behind hero */
+      .hero-glow {
+        position: absolute;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* Link hover underline */
+      .link-hover {
+        position: relative;
+        color: #a1a1aa;
+        transition: color 0.2s;
+      }
+      .link-hover::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0;
+        width: 0; height: 1px;
+        background: #e4e4e7;
+        transition: width 0.25s;
+      }
+      .link-hover:hover { color: #e4e4e7; }
+      .link-hover:hover::after { width: 100%; }
+
+      /* Project color accents */
+      .ledger-accent { color: #60a5fa; }
+      .zetro-accent  { color: #c084fc; }
+      .mouchak-accent { color: #fb923c; }
+
+      .ledger-bar  { background: linear-gradient(90deg, #1d4ed8, #3b82f6); }
+      .zetro-bar   { background: linear-gradient(90deg, #7c3aed, #c084fc); }
+      .mouchak-bar { background: linear-gradient(90deg, #c2410c, #fb923c); }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { motion, AnimatePresence, useInView } = window.Motion;
+      const { useRef, useState, useEffect } = React;
+
+      /* ── Framer Motion helpers ── */
+      const fadeUp = {
+        hidden: { opacity: 0, y: 28 },
+        show: (i = 0) => ({
+          opacity: 1, y: 0,
+          transition: { duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }
+        })
+      };
+
+      /* ── Section wrapper with in-view trigger ── */
+      function Section({ children, className = '' }) {
+        const ref = useRef(null);
+        const inView = useInView(ref, { once: true, margin: '-80px' });
+        return (
+          <motion.section
+            ref={ref}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}
+            className={className}
+          >
+            {children}
+          </motion.section>
+        );
+      }
+
+      /* ── Nav ── */
+      function Nav() {
+        const [scrolled, setScrolled] = useState(false);
+        useEffect(() => {
+          const fn = () => setScrolled(window.scrollY > 24);
+          window.addEventListener('scroll', fn);
+          return () => window.removeEventListener('scroll', fn);
+        }, []);
+
+        return (
+          <motion.nav
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed top-5 left-1/2 -translate-x-1/2 z-50"
+          >
+            <div className={`glass-nav flex items-center gap-8 px-6 py-3 rounded-full transition-all duration-300 ${scrolled ? 'shadow-2xl' : ''}`}>
+              <span className="font-mono text-xs text-[#52525b] tracking-widest select-none">IA</span>
+              <div className="flex items-center gap-6">
+                {['Work', 'About', 'Contact'].map(item => (
+                  <a key={item} href={`#${item.toLowerCase()}`} className="link-hover text-sm font-medium">
+                    {item}
+                  </a>
+                ))}
+              </div>
+              <a
+                href="mailto:imtiaz@example.com"
+                className="text-xs font-mono px-4 py-1.5 rounded-full bg-[#e4e4e7] text-[#0a0a0b] hover:bg-white transition-colors"
+              >
+                Hire me
+              </a>
+            </div>
+          </motion.nav>
+        );
+      }
+
+      /* ── Hero ── */
+      function Hero() {
+        return (
+          <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 overflow-hidden">
+            <div className="hero-glow" />
+            <div className="relative z-10 max-w-3xl mx-auto">
+              <motion.div
+                variants={fadeUp} initial="hidden" animate="show" custom={0}
+                className="flex items-center justify-center gap-2 mb-8"
+              >
+                <span className="dot-green" />
+                <span className="font-mono text-xs text-[#52525b]">Available for projects</span>
+              </motion.div>
+
+              <motion.h1
+                variants={fadeUp} initial="hidden" animate="show" custom={1}
+                className="text-5xl sm:text-7xl font-bold tracking-tight leading-[1.05] mb-6"
+                style={{ letterSpacing: '-0.03em' }}
+              >
+                Imtiaz Ahmed
+              </motion.h1>
+
+              <motion.p
+                variants={fadeUp} initial="hidden" animate="show" custom={2}
+                className="text-lg sm:text-xl text-[#71717a] font-light max-w-xl mx-auto leading-relaxed mb-10"
+              >
+                Student developer from <span className="text-[#a1a1aa]">Bangladesh</span> — crafting fast, minimal web apps that solve real problems with Next.js, React & TypeScript.
+              </motion.p>
+
+              <motion.div
+                variants={fadeUp} initial="hidden" animate="show" custom={3}
+                className="flex items-center justify-center gap-4 flex-wrap"
+              >
+                <a href="#work" className="px-6 py-3 bg-[#e4e4e7] text-[#0a0a0b] rounded-full text-sm font-semibold hover:bg-white transition-colors">
+                  View Work ↓
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+                   className="px-6 py-3 rounded-full text-sm font-medium border border-[#27272a] text-[#a1a1aa] hover:border-[#52525b] hover:text-[#e4e4e7] transition-colors">
+                  GitHub
+                </a>
+              </motion.div>
+
+              <motion.div
+                variants={fadeUp} initial="hidden" animate="show" custom={5}
+                className="mt-20 flex items-center justify-center gap-6 text-[#3f3f46]"
+              >
+                {['Next.js', 'React', 'TypeScript', 'Tailwind', 'Node.js'].map((tech, i) => (
+                  <React.Fragment key={tech}>
+                    <span className="font-mono text-xs">{tech}</span>
+                    {i < 4 && <span className="text-[#27272a]">·</span>}
+                  </React.Fragment>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Scroll indicator */}
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2"
+            >
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                className="w-[1px] h-10 bg-gradient-to-b from-[#27272a] to-transparent mx-auto"
+              />
+            </motion.div>
+          </section>
+        );
+      }
+
+      /* ── Bento card with mouse-track glow ── */
+      function BentoCard({ children, className = '', style = {} }) {
+        const ref = useRef(null);
+        function handleMouseMove(e) {
+          const rect = ref.current.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+          const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+          ref.current.style.setProperty('--mx', x + '%');
+          ref.current.style.setProperty('--my', y + '%');
+        }
+        return (
+          <div
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            className={`bento-card ${className}`}
+            style={style}
+          >
+            {children}
+          </div>
+        );
+      }
+
+      /* ── Project card ── */
+      function ProjectCard({ name, tagline, tags, accentClass, barClass, year, link, description, custom }) {
+        return (
+          <motion.div variants={fadeUp} custom={custom} className="h-full">
+            <BentoCard className="h-full flex flex-col p-7 group">
+              {/* Color bar */}
+              <div className={`h-[2px] w-12 rounded-full mb-6 ${barClass} opacity-80`} />
+
+              <div className="flex items-start justify-between mb-3">
+                <h3 className={`text-xl font-semibold tracking-tight ${accentClass}`}>{name}</h3>
+                <span className="font-mono text-xs text-[#3f3f46] mt-1">{year}</span>
+              </div>
+
+              <p className="text-[#71717a] text-sm leading-relaxed mb-5 flex-1">{description}</p>
+
+              <div className="flex flex-wrap gap-2 mb-6">
+                {tags.map(t => <span key={t} className="tag">{t}</span>)}
+              </div>
+
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-[#a1a1aa] hover:text-[#e4e4e7] transition-colors mt-auto"
+              >
+                View project
+                <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform">→</span>
+              </a>
+            </BentoCard>
+          </motion.div>
+        );
+      }
+
+      /* ── Work section ── */
+      function Work() {
+        const ref = useRef(null);
+        const inView = useInView(ref, { once: true, margin: '-80px' });
+        const projects = [
+          {
+            name: 'The Ledger',
+            year: '2024',
+            accentClass: 'ledger-accent',
+            barClass: 'ledger-bar',
+            description: 'A smart personal finance tracker with AI-powered insights, budgeting categories, and real-time sync. Built to replace spreadsheets for students.',
+            tags: ['Next.js', 'Prisma', 'Postgres', 'Stripe'],
+            link: '#',
+            custom: 1,
+          },
+          {
+            name: 'ZETRO',
+            year: '2024',
+            accentClass: 'zetro-accent',
+            barClass: 'zetro-bar',
+            description: 'A minimal productivity OS with task management, deep-work sessions, and a distraction-blocking layer. Keyboard-first, zero bloat.',
+            tags: ['React', 'TypeScript', 'Zustand', 'Tauri'],
+            link: '#',
+            custom: 2,
+          },
+          {
+            name: 'Mouchak Sports',
+            year: '2023',
+            accentClass: 'mouchak-accent',
+            barClass: 'mouchak-bar',
+            description: 'An e-commerce platform for local sports equipment with live inventory, order tracking, and a custom CMS — serving Comilla, Bangladesh.',
+            tags: ['Next.js', 'Sanity CMS', 'Shadcn/ui', 'Razorpay'],
+            link: '#',
+            custom: 3,
+          },
+        ];
+
+        return (
+          <section ref={ref} id="work" className="max-w-5xl mx-auto px-5 py-32">
+            <motion.div
+              variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'} custom={0}
+              className="mb-14"
+            >
+              <p className="section-label mb-3">Selected work</p>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ letterSpacing: '-0.02em' }}>
+                Things I've built
+              </h2>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate={inView ? 'show' : 'hidden'}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            >
+              {projects.map(p => <ProjectCard key={p.name} {...p} />)}
+            </motion.div>
+
+            {/* Bento extra row */}
+            <motion.div
+              variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'} custom={4}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4"
+            >
+              {/* Stats card */}
+              <BentoCard className="p-7">
+                <p className="section-label mb-6">By the numbers</p>
+                <div className="grid grid-cols-3 gap-4">
+                  {[['3+', 'Projects shipped'], ['100%', 'Open source'], ['∞', 'Things to learn']].map(([num, label]) => (
+                    <div key={label}>
+                      <p className="text-3xl font-bold tracking-tight text-[#e4e4e7] mb-1">{num}</p>
+                      <p className="text-xs text-[#52525b] font-mono leading-snug">{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </BentoCard>
+
+              {/* Stack card */}
+              <BentoCard className="p-7">
+                <p className="section-label mb-5">Current stack</p>
+                <div className="flex flex-wrap gap-2">
+                  {['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Prisma', 'PostgreSQL', 'Framer Motion', 'Zustand', 'Vercel'].map(t => (
+                    <span key={t} className="tag">{t}</span>
+                  ))}
+                </div>
+              </BentoCard>
+            </motion.div>
+          </section>
+        );
+      }
+
+      /* ── About ── */
+      function About() {
+        const ref = useRef(null);
+        const inView = useInView(ref, { once: true, margin: '-80px' });
+        return (
+          <section ref={ref} id="about" className="max-w-5xl mx-auto px-5 py-20">
+            <div className="glow-line mb-20" />
+            <motion.div
+              variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'} custom={0}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start"
+            >
+              <div>
+                <p className="section-label mb-4">About</p>
+                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6" style={{ letterSpacing: '-0.02em' }}>
+                  Developer &<br/>perpetual learner
+                </h2>
+                <div className="space-y-4 text-[#71717a] text-sm leading-relaxed">
+                  <p>
+                    I'm Imtiaz — a student developer based in <span className="text-[#a1a1aa]">Comilla, Bangladesh</span>,
+                    obsessed with building software that feels good to use. I care deeply about performance,
+                    clean architecture, and shipping things that matter.
+                  </p>
+                  <p>
+                    When I'm not coding, I'm reading about product design, contributing to open source,
+                    or figuring out why my CSS won't center vertically.
+                  </p>
+                  <p>
+                    Currently focused on full-stack web development with Next.js and exploring AI integrations.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  { label: 'Location', value: 'Comilla, Bangladesh 🇧🇩' },
+                  { label: 'Currently', value: 'CS student + freelancing' },
+                  { label: 'Interests', value: 'Minimalism, dev tools, open source' },
+                  { label: 'Learning', value: 'Rust, system design, AI engineering' },
+                ].map(({ label, value }, i) => (
+                  <motion.div
+                    key={label}
+                    variants={fadeUp} custom={i + 1}
+                    className="flex items-start justify-between py-4 border-b border-[#18181b]"
+                  >
+                    <span className="font-mono text-xs text-[#3f3f46] uppercase tracking-widest pt-0.5">{label}</span>
+                    <span className="text-sm text-[#a1a1aa] text-right">{value}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+        );
+      }
+
+      /* ── Contact ── */
+      function Contact() {
+        const ref = useRef(null);
+        const inView = useInView(ref, { once: true, margin: '-80px' });
+        return (
+          <section ref={ref} id="contact" className="max-w-5xl mx-auto px-5 py-32">
+            <div className="glow-line mb-20" />
+            <motion.div
+              variants={fadeUp} initial="hidden" animate={inView ? 'show' : 'hidden'} custom={0}
+              className="text-center max-w-xl mx-auto"
+            >
+              <p className="section-label mb-4">Get in touch</p>
+              <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6" style={{ letterSpacing: '-0.03em' }}>
+                Let's build<br/>something.
+              </h2>
+              <p className="text-[#71717a] text-sm leading-relaxed mb-10">
+                Open to freelance projects, internships, and interesting conversations about tech and design.
+              </p>
+              <motion.a
+                variants={fadeUp} custom={1}
+                href="mailto:imtiaz@example.com"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-[#e4e4e7] text-[#0a0a0b] rounded-full text-sm font-semibold hover:bg-white transition-colors"
+              >
+                Say hello →
+              </motion.a>
+
+              <motion.div variants={fadeUp} custom={2} className="flex items-center justify-center gap-8 mt-12 text-[#3f3f46]">
+                {[
+                  { label: 'GitHub', href: 'https://github.com' },
+                  { label: 'Twitter', href: 'https://twitter.com' },
+                  { label: 'LinkedIn', href: 'https://linkedin.com' },
+                ].map(({ label, href }) => (
+                  <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                     className="link-hover font-mono text-xs tracking-wide hover:text-[#a1a1aa]">
+                    {label}
+                  </a>
+                ))}
+              </motion.div>
+            </motion.div>
+          </section>
+        );
+      }
+
+      /* ── Footer ── */
+      function Footer() {
+        return (
+          <footer className="border-t border-[#18181b] py-8 px-5 max-w-5xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[#3f3f46]">
+              <span className="font-mono text-xs">© 2024 Imtiaz Ahmed</span>
+              <span className="font-mono text-xs">Made in Bangladesh 🇧🇩</span>
+            </div>
+          </footer>
+        );
+      }
+
+      /* ── App ── */
+      function App() {
+        return (
+          <>
+            <Nav />
+            <main>
+              <Hero />
+              <Work />
+              <About />
+              <Contact />
+            </main>
+            <Footer />
+          </>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>
