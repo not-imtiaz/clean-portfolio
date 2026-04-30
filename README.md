@@ -179,3 +179,4 @@ No npm. No bundler. No config. Just one file.
 MIT — use it, fork it, make it yours.
 
 Made by Imtiaz Ahmed - @not_imtiaz
+Instagram - instagram.com/imtuinyourcloset
